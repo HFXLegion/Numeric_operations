@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import string
-from threading import Thread
 from time import sleep
 
 
@@ -16,11 +15,6 @@ class Arrays:
             return []
         elif code == 2:
             return {}
-
-class Threader:
-
-    def get_thread(self, func, args=()):
-        return Thread(target = func, args = args)
 
 class TKinter:
 
@@ -76,7 +70,7 @@ class TKinter:
         return temp
 
     def get_checkbutton(self, master, x, y, var, text, action=None):
-        temp = ttk.Checkbutton(master, variable = var, text = text, command = action)
+        temp = ttk.Checkbutton(master, variable = var, text = text, command=action)
         self.place(temp, x, y)
         return temp
 
@@ -87,7 +81,7 @@ class TKinter:
 
     def set_mainloop(self, master):
         master.mainloop()
-        return array
+        return master
 
 
 class Splitter:
@@ -140,13 +134,11 @@ class Reader:
 
 class Scripts:
 
-    def greating_var_checker(self):
-        while True:
-            if self.var_array['greeting_show'].get():
-                self.write('sources/text/greeting.sys', 'yes')
-            else:
-                self.write('sources/text/greeting.sys', 'no')
-            sleep(0.1)
+    def check_greating_var(self, event=None):
+        if self.var_array['greeting_show'].get():
+            self.write('sources/text/greeting.sys', 'yes')
+        else:
+            self.write('sources/text/greeting.sys', 'no')
 
     def screen_init(self):
         windows_array = self.links[0]
@@ -175,7 +167,7 @@ class Scripts:
             self.bind(elements_array['begin_button'], '<Return>', self.main_window)
             elements_array['begin_button'].focus()
             elements_array['greeting_show_checkbutton'] = self.get_checkbutton(windows_array['main'], 150, 290, self.var_array['greeting_show']
-                                                                       , 'Показывать это окно при запуске',)
+                                                                       , 'Показывать это окно при запуске', self.check_greating_var)
         else:
             self.main_window()
     def main_window(self, event=None):
@@ -202,7 +194,7 @@ class Scripts:
                                                               , 'Очищать поле ввода после операции')
         elements_array['button'] = self.get_button(windows_array['main'], 2, 1, 'Считать', self.main_counter)
         elements_array['greeting_show_checkbutton'] = self.get_checkbutton(windows_array['main'], 250, 120, self.var_array['greeting_show']
-                                                                       , 'Показывать окно приветствия')
+                                                                       , 'Показывать окно приветствия', self.check_greating_var)
 
     def main_counter(self, event=None):
         try:
@@ -215,7 +207,7 @@ class Scripts:
             self.clean_entry(self.names_dict['line'])
 
 
-class Main(TKinter, Arrays, Threader, Splitter, Calculator, Scripts, Reader):
+class Main(TKinter, Arrays, Splitter, Calculator, Scripts, Reader):
 
     def __init__(self):
         self.links = self.get_array(1)
@@ -229,8 +221,6 @@ class Main(TKinter, Arrays, Threader, Splitter, Calculator, Scripts, Reader):
         self.screen_init()
         self.greeting_window()
 
-        var_checker1 = self.get_thread(self.greating_var_checker)
-        var_checker1.start()
 
         self.set_attributes(self.windows['main'], {'-topmost': True})
         self.set_mainloop(self.windows['main'])

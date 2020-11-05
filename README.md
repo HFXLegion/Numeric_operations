@@ -18,3 +18,7 @@
   1. Скачать архив
   2. Запустить "Numeric_operations.exe" (binary \ Numeric_operations.exe)
   
+  
+  P.S - формула на строке № 101 с тегом "main formula"
+  
+  
